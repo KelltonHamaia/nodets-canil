@@ -17,7 +17,7 @@ server.use( express.static(path.join(__dirname, '../public/')));
 
 server.use(mainRoutes);
 server.use((req:Request, res:Response)=>{
-    res.status(404).send('Erro 404!')
+    res.status(404).render('pages/404');
 })
 
 //Routes

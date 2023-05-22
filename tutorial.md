@@ -186,6 +186,8 @@ _{{>PARTALS/FOOTER}} -> iNCLUI O FOOTER
 -> Deixar apenas uma unica div de animal, pois vamos popular a tela usando as funções
 -->
 
+<!--?--------------------------------------------------------------------------->
+
 <!-- -> Aula 6 -  Modificando  dados em cada página: 
 -> Modificar o fundo e o texto do banner (h2)
 -> Modificar o animal pra adoção
@@ -204,6 +206,8 @@ _ title: Titulo da pagina  e background será o banne referente a pagina (allani
 _ gatos => usar informações de gato: title: "gato", background: "banner_cat.jpg"
 -->
 
+<!--?--------------------------------------------------------------------------->
+
 <!-- * Aula 7 -  Ativando o menu : primeira forma - Enviando um objeto na controller
 ! Criar um objeto chamado menu e envia-lo.
 ! Dentro do objeto, teremos booleans: all, dogs, cats, fishes
@@ -213,6 +217,7 @@ _ Se menu.all for verdadeiro, aplicar classe ativa em "todos"
 -> depois, pra dogs, cats, fishes
 -->
 
+<!-- !Essa aqui é melhor -->
 <!-- -> Aula 7 -  Ativando o menu : segunda forma - Enviando um objeto na controller
 ! Vamos criar uma função que vai gerar os objetos de menu:
 * Ao invés de ficaar repetindo o mesmo objeto várias vezes no código
@@ -232,3 +237,127 @@ _ '', all, dogs, cats, fishes -> por padrão, todos são false.
 
 -> Com a função criada, basta importar o arquivo da função e usa-lo.
 -->
+
+<!--?--------------------------------------------------------------------------->
+
+<!-- * Aula 8 - Criando o MODEL PET - Parte 1 
+-> Teremos um unico model que controlará os os pets -> cobre cachorro, gato, peixe.
+
+-> Na pasta models: Criar um arquivo chamado pet.ts
+! Normalmente colocam o nome da model em pascal case,
+! Mas não faz diferença, é gosto pessoal.
+
+-> O model será um objeto que tem funções que realizam ações com o pet. 
+    * -> Pegar todos os pets -> Todo mundo, tela inicial
+    * -> Filtrar os pets pelo tipo (cachorro, gato)
+    * -> Filtrar os pets pelo nome da raça
+
+-> Criar e exportar um objeto chamado Pet    
+! Como não "sabemos" usar banco de dados aqui, vamos simular a recuperação de dados de um DB,
+! Através de um array de objetos, onde nele, terá os pets.
+-> O nome do array será DATA.
+
+! Por estarmos trabalhando com dados, devemos TIPAR eles para não dar problema.
+! O tipe será "Pet" e vai ser um objeto, onde teremos o nome da chave, e no valor, os tipos aceitos.
+
+* Logo, o objeto que estamos exportando deve ter seu tipo definido como um array de Pet.
+
+ ! PRIMEIRA FUNÇÃO - PEGAR TODOS OS PETS:  
+ -> getAll -> retorna todos os pets, ou seja, o array DATA. Pode tipar o retorno da função para Pet também
+ 
+-->
+
+<!--?--------------------------------------------------------------------------->
+
+
+<!-- -> Aula 9 - Criando o MODEL PET - Parte 2 
+* Criar uma função para filtrar o pet pelo TIPO [cachorro, gato, peixe]
+! Essa função só aceita 3 parâmetros: dog, cat, fish -> então devemos DAR OS TYPES 
+* Poderiamos colocar que o parametro seria: getFromType: (type: 'dog' | 'cat' | 'fish'),
+! Mas repetir o codigo pode ser desgastante, vamos apenas criar um novo type para esse parametro e usá-lo.
+_ O nome do type será PetType -> E o retorno será do type Pet, pois retornará um array de Pet.
+-> Essa função vai rodar um FILTER, onde veremos se o item.type for igual o type passado no parametro da funçao
+-> Se sim, retorne true, ouseja, retorne esse item para o array, se não, retorne falso.
+
+* Criar uma função para filtrar o pet pelo NOME.
+! Essa função aceita qualquer parametro que seja do type STRING.
+-> Atenção: data.filter.indexOf(name) => retorna o indice de um caractere ou strings em uma palavra.
+-> Se ele encontra o indice, então sempre será maior ou igual a zero.
+-> Se o indice for -1, ele não existe, ou seja, a consulta não retorna nada.
+-> IMPORTANTE AQUI -> indexOf é case sensitive, então por isso tem o toLowerCase na função,
+_ Se no banco o nome era 'Batata' e eu procuro por 'b', apesar de ter a letra b, ele retorna -1
+_ Pois os cases são diferentes.
+-->
+
+<!--?--------------------------------------------------------------------------->
+
+<!-- ! Aula 10 - Listando os pets no controller 
+-> Usaremos a model dentro da pageController -> Importar.
+* Na rota de cada pet, antes de renderizar a página, vamos receber todos os dados dos animais.
+-> O recebimento se dá pela chamada das funções Pet.getFromType('dog' ou 'cat' ou 'fish')
+-> ou para pegar todos pet.getAllPets();
+* Salvar o retorno das funções na variavel LIST e a envia na rota, junto dos outros objetos.
+-> Agora temos acesso aos itens da lista, então poderemos renderizá-los na pagina.   
+_ Para usar, abrir e fechar bloco de if {{#lista}} conteudo {{/lista}}
+_ E para usar os valores do objeto, apenas dizemos o nome da chave, sem o objeto em si. 
+
+! Agora falta apenas replicar 
+-->
+
+<!--?--------------------------------------------------------------------------->
+
+<!-- _ Aula 11 - Fazendo a busca e o 404 
+-> Faremos a busca [rota de pesquisa funcionar]
+-> Faremos a pagina 404 [rota de página não encontrada!]
+
+* no searchController: 
+* Vamos importar o Pet do model de PET, onde tem as funções e dados.
+* Vamos importar o createMenuObject da helper 'createMenuObject'.
+-> Ele não possui banner, vamos reaproveitar o arquivo page.mustache.
+-> Ele nem mostra o banner pois não vamos enviar o objeto 'banner' na rota.
+
+-> No objeto enviado, mandaremos o menu createMenuObject('') vazio
+-> Como o search vai jogar na url uma query,
+-> podemos pegar o que o usuario pesquisar e salvar numa variável.
+
+* A PARTIR DO QUE O USUARIO DIGITAR, PODEMOS MONTAR NOSSA LISTA.
+! Usando a funcao pet.getFromName() e como parametro, passamos o que o usuario estava pesquisando. 
+* Salvamos o resultado da funcao na variavel list e enviamos no objeto da rota
+-> Com isso, conseguimos montar o layout.
+_ Mas e se ele fizer uma pesquisa que não retorna nada?
+! Criamos um else no mustache {{^list}} codigo_a_ser_renderizado {{/list}}
+! E dentro dele, criamos um codigo que será renderizado caso tal informação não exista.
+
+
+_ Quando uma busca é feita por input search, normalmente o texto se mantem na box do input.
+_ Para que isso aconteca, vamos pegar o que foi pesquisado (variavel QUERY) e reenviar no objeto da rota
+* Por fim, vamos passar o valor para dentro do "VALUE" do input no header.mustache
+_Nele não precisa de um if else, só o fato de ter {{#list}} já faz a verificação simples
+
+-> :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+-> Criando a página 404.mustache
+-> Não poderá ser reaproveitada a page.mustache.
+* Criar uma pagina nova: 404.mustache
+_ Essa página vamos apenas copiar o conteudo de page.mustache, porem vamos remover:
+! remover banner
+! Esvaziar a div container list, referente aos locais onde apareciam os cards dos pets
+! Modificamos o texto da div container no-list para "página não encontrada"
+
+-->
+
+<!-- -> Aula 11 - extra - redirecionamento caso input search esteja vazio
+-> No searchController, pegamos atraves de req.query.q o valor enviado do input.
+
+! então, podemos fazer uma verificação, sendo ela:
+_ Se não houver valor algum na variavel que armazena o valor de query, ou seja
+_ if(!query) {
+->    res.redirect('/');    
+->    return;  
+_}
+* redirecione o usuario para a pagina home
+* o return serve para parar a execução da função ou vai dar o erro: 
+_ "Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client"
+-->
+
+`Commit final`

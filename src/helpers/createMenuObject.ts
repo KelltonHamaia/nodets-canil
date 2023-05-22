@@ -7,8 +7,10 @@ export const createMenuObject = (activeMenu: MenuOptions) => {
         cats: false,
         fishes: false,
     }
+    
     if( activeMenu !== '') {
-        returnObject[activeMenu] = true
+        returnObject[activeMenu] = true;
     }
-    return returnObject
+
+    return returnObject;
 }
