@@ -361,3 +361,45 @@ _ "Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the 
 -->
 
 `Commit final`
+
+<!-- ! Aula 12 - Colocando o projeto no ar: Parte 1 {{#313536}}
+_ IMPORTANTE _
+! Como nosso projeto foi feito em TYPESCRIPT, ra colocar no ar, é necessario converter ele pra JAVASCRIPT 
+* Para isso, vamos no arquivo de configuração do typescript: 
+-> rootDir -> A pasta src, Onde foi criado o projeto
+-> outDir -> A pasta dist, Onde ficará o projeto convertido pra javascript
+
+-> Faremos o deploy na RAILWAY, mas primeiro vamos configurar o projeto.
+_ Acessar o package.json e nele alterar algumas coisas:
+_ Criar um objeto após index.js chamado engines.
+    -> Criar a chave node e passar a versão do node utilizada (abrir terminal e ver através do node -v)
+    -> foi usado o node 18.12.1, mas pode sibstituir por 18.x que funciona
+
+-> Criar um arquivo chamado Procfile sem extensão nem nada.
+_ nele especificamos configurações de como rodar o projeto.
+* Dizemos que o peojeto é pra web e o comando será npm start
+    ! web: npm start
+    * Para isso criar o script de start
+    * Nesse script rodamos node dist/server.js
+    * dist pois é o projeto já compilado pra js
+
+_ Criar outro script chamado "postinstall" no package.json
+_ Para isso, instalar uma lib chamada copyfiles como dev-dependencies
+_ Ela será necessaria para copiar a pasta views para a pasta dist
+    ! "postinstall": " tsc && copyfiles -u 1 /src/**/*.mustache dist/  
+    * tsc transpila o typescript para javascript.
+    * copyfiles ... copia todos os arquivos de src que for .mustache
+    ! E os colocam na pasta dist
+-->
+
+<!-- -> Aula 13 -  Colocando o projeto no ar: FINAL
+    
+
+-->
+
+
+<!-- !IMPORTANTE!
+
+-> usa o Railway que é gratuito e até mais fácil de usar, façam todos os passos da aula 01 , com adição do install do typescript que ele tinha esquecido e lembrou nessa aula, já comita e dê o push pro github.
+-> Depois você cria a conta no Railway(não precisa de toda essa verificação chata do Heroku), vincula sua conta com o github, vai em new project -> deploy from github repo -> deploy now, e seja feliz
+ -->
