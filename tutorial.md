@@ -393,7 +393,12 @@ _ Ela será necessaria para copiar a pasta views para a pasta dist
 -->
 
 <!-- -> Aula 13 -  Colocando o projeto no ar: FINAL
-    
+    -> instalar o typescript dentro do projeto.
+    -> Apesar de ter ele global, ele é global apenas na SUA maquina.
+* No package.json, criar mais um script:
+->    "tsc": "tsc"
+* E modificar o postinstall para :
+->    "postinstall": "npm run tsc && copyfiles -u 1 src/**/*.mustache dist/",
 
 -->
 
